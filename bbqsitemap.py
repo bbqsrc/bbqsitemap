@@ -47,7 +47,6 @@ class SitemapManager:
         if not host.endswith('/'):
             host += '/'
         self.host = host
-        self.index = SitemapIndex()
         self.sitemaps = [Sitemap()]
 
     def add(self, url):
@@ -58,9 +57,10 @@ class SitemapManager:
             self.add(url)
 
     def save(self):
+        index = SitemapIndex()
         for n, sitemap in enumerate(self.sitemaps):
             fn = "sitemap%s.xml.gz" % n
             sitemap.save(fn)
-            self.index.add(self.host + fn)
-        self.index.save('sitemapindex.xml.gz')
+            index.add(self.host + fn)
+        index.save('sitemapindex.xml.gz')
 
